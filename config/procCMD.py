@@ -2,9 +2,11 @@ import json
 
 class Commands:
     def __init__(self, file: str = 'config/commands.json', mode: str = 'r'):
-        with open(file, mode, encoding='utf-8') as file:
-            self.data = json.load(file)
-
+        try:
+            with open(file, mode, encoding='utf-8') as file:
+                self.data = json.load(file)
+        except FileNotFoundError:
+            open('config/commands.json', 'w+')
 class ApplicationCommands(Commands):
     def __init__(self, text: str):
         super().__init__()
