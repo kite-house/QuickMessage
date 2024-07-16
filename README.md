@@ -40,7 +40,7 @@ api_hash = ""
 
 
 # QuickMessage #ENG
-[EN](https://github.com/kite-house/QuickMessage?tab=readme-ov-file#testbot-eng)
+[RU](https://github.com/kite-house/QuickMessage?tab=readme-ov-file#quickMessage-ru)
 
 > [!IMPORTANT]
 > Quick message for telegram 
