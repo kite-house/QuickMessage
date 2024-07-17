@@ -1,12 +1,20 @@
 import json
 
 class Commands:
-    def __init__(self, file: str = 'config/commands.json', mode: str = 'r'):
+    def __init__(self, file: str = 'config/commands.json', mode: str = 'r', **kwargs):
         try:
             with open(file, mode, encoding='utf-8') as file:
-                self.data = json.load(file)
+                if mode == 'r':
+                    self.data = json.load(file)
+
+                if mode == 'w+':
+                    self.data = json.dump(kwargs['data'], file, ensure_ascii=False)
+                
         except FileNotFoundError:
             open('config/commands.json', 'w+')
+
+        except json.decoder.JSONDecodeError:
+            self.data = {}
 class ApplicationCommands(Commands):
     def __init__(self, text: str):
         super().__init__()
@@ -15,5 +23,9 @@ class ApplicationCommands(Commands):
     def __str__(self):
         return str(self.data[self.text.split(' ')[0]]).format(*self.text.split(' ')[1:])
 
-class EditCommands(Commands):
-    pass
+class EditCommand(Commands):
+    def __init__(self, text: str):
+        super().__init__()
+        text = text.replace('/editCommand', '').strip()
+        self.data[text.split(' ')[0]] = text.replace(text.split(" ")[0], '').strip()
+        super().__init__(mode = 'w+', data = self.data)
