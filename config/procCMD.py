@@ -27,5 +27,7 @@ class EditCommand(Commands):
     def __init__(self, text: str):
         super().__init__()
         text = text.replace('/editCommand', '').strip()
+        if not text:
+            return
         self.data[text.split(' ')[0]] = text.replace(text.split(" ")[0], '').strip()
         super().__init__(mode = 'w+', data = self.data)
