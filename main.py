@@ -9,8 +9,7 @@ client = TelegramClient('client', getenv('api_id'), getenv('api_hash'))
 async def command_handler(message):
     try:
         response = str(ApplicationCommands(message.text)).replace("&", " ")
-    except Exception as error:
-        print(error)
+    except Exception:
         return
     
     await message.delete()
@@ -24,7 +23,5 @@ async def edit_commands_handler(message):
         return 
     await message.delete()
     
-
-
 client.start()
 client.run_until_disconnected()
