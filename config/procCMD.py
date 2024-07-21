@@ -15,6 +15,7 @@ class Commands:
 
         except json.decoder.JSONDecodeError:
             self.data = {}
+
 class ApplicationCommands(Commands):
     def __init__(self, text: str):
         super().__init__()
@@ -31,3 +32,11 @@ class EditCommand(Commands):
             return
         self.data[text.split(' ')[0]] = text.replace(text.split(" ")[0], '').strip()
         super().__init__(mode = 'w+', data = self.data)
+
+class OutputCommands(Commands):
+    def __init__(self):
+        super().__init__()
+
+    def __iter__(self):
+        for attr in self.data:
+            yield {attr : self.data[attr]} 
