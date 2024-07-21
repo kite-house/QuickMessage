@@ -1,6 +1,6 @@
 from os import getenv
 from telethon import TelegramClient, events
-from config.procCMD import *
+from config.processingCommands import *
 
 client = TelegramClient('client', getenv('api_id'), getenv('api_hash'))
 
@@ -8,7 +8,7 @@ client = TelegramClient('client', getenv('api_id'), getenv('api_hash'))
 @client.on(events.NewMessage(outgoing=True, pattern='/'))
 async def command_handler(message):
     try:
-        response = str(ApplicationCommands(message.text)).replace("&", " ")
+        response = str(ExecuteCommand(message.text)).replace("&", " ")
     except Exception:
         return
     
@@ -18,7 +18,7 @@ async def command_handler(message):
 @client.on(events.NewMessage(outgoing=True, pattern='/editCommand'))
 async def edit_commands_handler(message):
     try:
-        EditCommand(message.text)
+        UpdateCommand(message.text)
     except Exception:
         return 
     await message.delete()

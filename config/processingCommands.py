@@ -16,7 +16,7 @@ class Commands:
         except json.decoder.JSONDecodeError:
             self.data = {}
 
-class ApplicationCommands(Commands):
+class ExecuteCommand(Commands):
     def __init__(self, text: str):
         super().__init__()
         self.text = text
@@ -24,7 +24,15 @@ class ApplicationCommands(Commands):
     def __str__(self):
         return str(self.data[self.text.split(' ')[0]]).format(*self.text.split(' ')[1:])
 
-class EditCommand(Commands):
+class GetCommands(Commands):
+    def __init__(self):
+        super().__init__()
+
+    def __iter__(self):
+        for attr in self.data:
+            yield {attr : self.data[attr]} 
+
+class UpdateCommand(Commands):
     def __init__(self, text: str):
         super().__init__()
         text = text.replace('/editCommand', '').strip()
@@ -32,11 +40,3 @@ class EditCommand(Commands):
             return
         self.data[text.split(' ')[0]] = text.replace(text.split(" ")[0], '').strip()
         super().__init__(mode = 'w+', data = self.data)
-
-class OutputCommands(Commands):
-    def __init__(self):
-        super().__init__()
-
-    def __iter__(self):
-        for attr in self.data:
-            yield {attr : self.data[attr]} 

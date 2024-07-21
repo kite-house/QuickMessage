@@ -1,5 +1,6 @@
 from customtkinter import *
 from CTkMenuBar import *
+from gui.commands import CommandManager
 
 root = CTk()
 root.title('QuickMessage')
@@ -11,8 +12,11 @@ canvas.pack(fill= 'both', expand=True)
 
 menu = CTkTitleMenu(master=root)
 menu.add_cascade(text='Аккаунты')
-menu.add_cascade(text='Команды')
+menu.add_cascade(text='Команды', postcommand = lambda: CommandManager(canvas))
 menu.add_cascade(text='Настройки')
+
+
+
 
 root.config(menu=menu)
 root.mainloop()
