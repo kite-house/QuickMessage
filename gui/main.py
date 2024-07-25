@@ -15,8 +15,5 @@ menu.add_cascade(text='Аккаунты')
 menu.add_cascade(text='Команды', postcommand = lambda: CommandManager(canvas))
 menu.add_cascade(text='Настройки')
 
-
-
-
 root.config(menu=menu)
 root.mainloop()

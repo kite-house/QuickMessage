@@ -33,10 +33,13 @@ class GetCommands(Commands):
             yield {attr : self.data[attr]} 
 
 class UpdateCommand(Commands):
-    def __init__(self, text: str):
+    def __init__(self, command: str, text: str):
         super().__init__()
-        text = text.replace('/editCommand', '').strip()
-        if not text:
-            return
-        self.data[text.split(' ')[0]] = text.replace(text.split(" ")[0], '').strip()
+        self.data[command] = text
         super().__init__(mode = 'w+', data = self.data)
+
+class DeleteCommand(Commands):
+    def __init__(self, command: str):
+        super().__init__()
+        del self.data[command]
+        super().__init__(mode = "w+", data = self.data)
