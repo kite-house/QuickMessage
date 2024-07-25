@@ -2,6 +2,7 @@ from config.processingCommands import GetCommands, DeleteCommand, UpdateCommand
 from customtkinter import *
 from CTkMessagebox import CTkMessagebox
 from collections import namedtuple
+import time
 
 class Scroll:
     def add(self, canvas: CTkCanvas):
@@ -12,7 +13,10 @@ class Scroll:
 
 
     def delete(self, canvas: CTkCanvas):
-        self.scrollbar.pack_forget()
+        try:
+            self.scrollbar.pack_forget()
+        except AttributeError:
+            pass
         canvas.unbind('<MouseWheel>')
         canvas.yview_moveto(0)
 
@@ -37,11 +41,11 @@ class CommandManager:
 
     def outputCommands(self, position: int = 0):
         ''' Вывод всех команд в меню '''
+
         for command in [namedtuple('command', ['name', 'text'])(key, value) for command in GetCommands() for key, value in command.items()]:
             displayCommand = CTkTextbox(self.canvas, 530, 40, font=("Helvetica", 14, "bold"))
             displayCommand.insert('0.0', text=command.name)
             displayCommand.configure(state="disabled")
-            displayCommand.bind('<MouseWheel>', lambda event: self.canvas.yview_scroll(int(event.delta / -110), 'units'))
         
             self.canvas.create_window(290, position + 45, window=displayCommand)
             self.createControlCommandButtons(position, command) # Добавляем кнопки упраление редактирование/удаление команды
@@ -51,8 +55,8 @@ class CommandManager:
         button_add_command = CTkButton(self.canvas, text = 'Добавить новую команду', font=("Helvetica", 11, "bold"), cursor='hand2', command= self.editCommand)
         self.canvas.create_window(110, position + 40, window = button_add_command)
 
-        scroll.add(self.canvas)
-
+        if position > 350:
+            scroll.add(self.canvas)
 
     def deleteCommand(self, command):
         ''' Удаление команды '''
