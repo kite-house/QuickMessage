@@ -72,5 +72,3 @@ class DeleteCommand(Commands):
         super().__init__()
         del self.data[command]
         super().__init__(mode = "w+", data = self.data)
-
-print(UpdateCommand.validation(None, 'ssss', 'че как?'))

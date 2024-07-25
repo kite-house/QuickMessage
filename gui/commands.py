@@ -3,6 +3,24 @@ from customtkinter import *
 from CTkMessagebox import CTkMessagebox
 from collections import namedtuple
 
+class Scroll:
+    def add(self, canvas: CTkCanvas):
+        self.scrollbar = CTkScrollbar(canvas, command = canvas.yview)
+        self.scrollbar.pack(side = RIGHT, fill = 'y')
+        canvas.configure(scrollregion = canvas.bbox(ALL), yscrollcommand=self.scrollbar.set)
+        canvas.bind('<MouseWheel>', lambda event: canvas.yview_scroll(-int(event.delta / 110), 'units'))
+
+
+    def delete(self, canvas: CTkCanvas):
+        self.scrollbar.pack_forget()
+        canvas.unbind('<MouseWheel>')
+        canvas.yview_moveto(0)
+
+        
+
+    
+scroll = Scroll()
+
 class CommandManager:
     def __init__(self, canvas: CTkCanvas):
         self.canvas = canvas
@@ -19,13 +37,13 @@ class CommandManager:
 
     def outputCommands(self, position: int = 0):
         ''' Вывод всех команд в меню '''
-
         for command in [namedtuple('command', ['name', 'text'])(key, value) for command in GetCommands() for key, value in command.items()]:
             displayCommand = CTkTextbox(self.canvas, 530, 40, font=("Helvetica", 14, "bold"))
             displayCommand.insert('0.0', text=command.name)
             displayCommand.configure(state="disabled")
-
-            self.canvas.create_window(290, position + 45, window=displayCommand) 
+            displayCommand.bind('<MouseWheel>', lambda event: self.canvas.yview_scroll(int(event.delta / -110), 'units'))
+        
+            self.canvas.create_window(290, position + 45, window=displayCommand)
             self.createControlCommandButtons(position, command) # Добавляем кнопки упраление редактирование/удаление команды
                         
             position += 50 
@@ -33,10 +51,14 @@ class CommandManager:
         button_add_command = CTkButton(self.canvas, text = 'Добавить новую команду', font=("Helvetica", 11, "bold"), cursor='hand2', command= self.editCommand)
         self.canvas.create_window(110, position + 40, window = button_add_command)
 
+        scroll.add(self.canvas)
+
+
     def deleteCommand(self, command):
         ''' Удаление команды '''
+        scroll.delete(self.canvas)
         self.canvas.delete(ALL)
-        
+
         dispalyConfirmationDeleteСommand = CTkTextbox(self.canvas, 350 + len(command.name)*7.2, 40, font=("Helvetica", 14, "bold"))
         dispalyConfirmationDeleteСommand.insert('0.0', text=f'Вы действительно хотите удалить команду {command.name}?')
         dispalyConfirmationDeleteСommand.configure(state="disabled")
@@ -54,8 +76,9 @@ class CommandManager:
 
     def editCommand(self, command: tuple = None):
         ''' Создание или редактирование команды'''
+        scroll.delete(self.canvas)
         self.canvas.delete(ALL)
-        
+
         inputNameCommand = CTkEntry(self.canvas, 450, 20, placeholder_text="Введите название команды")
         self.canvas.create_window(270, 50, window=inputNameCommand)
 
