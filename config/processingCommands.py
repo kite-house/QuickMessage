@@ -1,4 +1,5 @@
 import json
+from collections import namedtuple
 
 class Commands:
     def __init__(self, file: str = 'config/commands.json', mode: str = 'r', **kwargs):
@@ -33,13 +34,43 @@ class GetCommands(Commands):
             yield {attr : self.data[attr]} 
 
 class UpdateCommand(Commands):
-    def __init__(self, command: str, text: str):
+    def __init__(self, command: tuple):
         super().__init__()
-        self.data[command] = text
+        self.data[command.name] = command.text
         super().__init__(mode = 'w+', data = self.data)
+
+    @classmethod
+    def validation(src, command:tuple, inputNameCommand:str, inputTextCommand:str):
+        error = namedtuple('error', 'text')
+        
+        if not inputNameCommand:
+            return error('Поле название команды не может быть пустым')
+
+        if not inputTextCommand:
+            return error('Поле сообщение не может быть пустым')
+
+        if len(inputNameCommand) > 30:
+            return error('Название команды не должно содержать больше 30 символов!')
+        
+        if inputNameCommand.count(' '):
+            return error('Название команды не может содержать в себе пробелы!')
+
+        if len(inputTextCommand) > 4096:
+            return error('Сообщение не может содержать больше 4096 символов')
+        
+        if not inputNameCommand.startswith('/'):
+            inputNameCommand = f'/{inputNameCommand}'
+
+        if command:
+            if command.name != inputNameCommand:
+                DeleteCommand(command.name)
+
+        return namedtuple('command', ['name', 'text'])(inputNameCommand, inputTextCommand)
 
 class DeleteCommand(Commands):
     def __init__(self, command: str):
         super().__init__()
         del self.data[command]
         super().__init__(mode = "w+", data = self.data)
+
+print(UpdateCommand.validation(None, 'ssss', 'че как?'))
