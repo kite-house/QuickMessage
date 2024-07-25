@@ -32,8 +32,8 @@ class CommandManager:
         self.outputCommands()
 
     def createControlCommandButtons(self, position, command):
-        buttonEditCommand = CTkButton(self.canvas, text='📝', font=("Helvetica", 14, "bold"), cursor='hand2', fg_color='black', command=lambda: self.editCommand(command))
-        buttonDeleteCommand = CTkButton(self.canvas, text='❌', font=("Helvetica", 10, "bold"), cursor='hand2', fg_color='red', command=lambda: self.deleteCommand(command))
+        buttonEditCommand = CTkButton(self.canvas, text='📝', font=("Helvetica", 14, "bold"), cursor='hand2', fg_color='#23282B', hover_color = '#000000', command=lambda: self.editCommand(command))
+        buttonDeleteCommand = CTkButton(self.canvas, text='❌', font=("Helvetica", 10, "bold"), cursor='hand2', fg_color='red', hover_color='#8B0000', command=lambda: self.deleteCommand(command))
         
         self.canvas.create_window(564, position + 33, window=buttonEditCommand, height=19, width=22)
         self.canvas.create_window(564, position + 55, window=buttonDeleteCommand, height=19, width=22)    
@@ -43,13 +43,13 @@ class CommandManager:
         ''' Вывод всех команд в меню '''
 
         for command in [namedtuple('command', ['name', 'text'])(key, value) for command in GetCommands() for key, value in command.items()]:
-            displayCommand = CTkTextbox(self.canvas, 530, 40, font=("Helvetica", 14, "bold"))
-            displayCommand.insert('0.0', text=command.name)
-            displayCommand.configure(state="disabled")
-        
+            displayCommand = CTkEntry(self.canvas, 530, 40)
+            displayCommand.insert(0, string=f'{command.name}')
+            displayCommand.configure(state="disabled", font=("Helvetica", 14, "bold"),fg_color = '#1D1E1E', border_color = '#1D1E1E')
+
             self.canvas.create_window(290, position + 45, window=displayCommand)
             self.createControlCommandButtons(position, command) # Добавляем кнопки упраление редактирование/удаление команды
-                        
+                         
             position += 50 
 
         button_add_command = CTkButton(self.canvas, text = 'Добавить новую команду', font=("Helvetica", 11, "bold"), cursor='hand2', command= self.editCommand)
@@ -63,9 +63,9 @@ class CommandManager:
         scroll.delete(self.canvas)
         self.canvas.delete(ALL)
 
-        dispalyConfirmationDeleteСommand = CTkTextbox(self.canvas, 350 + len(command.name)*7.2, 40, font=("Helvetica", 14, "bold"))
-        dispalyConfirmationDeleteСommand.insert('0.0', text=f'Вы действительно хотите удалить команду {command.name}?')
-        dispalyConfirmationDeleteСommand.configure(state="disabled")
+        dispalyConfirmationDeleteСommand = CTkEntry(self.canvas, 350 + len(command.name)*7.2, 40)
+        dispalyConfirmationDeleteСommand.insert(0, string=f'Вы действительно хотите удалить команду {command.name}?')
+        dispalyConfirmationDeleteСommand.configure(state="disabled", font=("Helvetica", 14, "bold"),fg_color = '#1D1E1E', border_color = '#1D1E1E')
         self.canvas.create_window(300, 50, window=dispalyConfirmationDeleteСommand)
 
         button_delete_command = CTkButton(self.canvas, text='Удалить', font=("Helvetica", 10, "bold"), cursor='hand2', fg_color='red', 
@@ -84,9 +84,11 @@ class CommandManager:
         self.canvas.delete(ALL)
 
         inputNameCommand = CTkEntry(self.canvas, 450, 20, placeholder_text="Введите название команды")
+        inputNameCommand.configure(font=("Helvetica", 14, "bold"),fg_color = '#1D1E1E', border_color = '#1D1E1E')
         self.canvas.create_window(270, 50, window=inputNameCommand)
 
         inputTextCommand = CTkTextbox(self.canvas, 450, 200)
+        inputTextCommand.configure(font=("Helvetica", 11, "bold"))
         self.canvas.create_window(270, 200, window=inputTextCommand)
 
         if command:
@@ -110,7 +112,7 @@ class CommandManager:
                 UpdateCommand(command)
 
 
-        button_save_command = CTkButton(self.canvas, text='Сохранить', font=("Helvetica", 10, "bold"), cursor='hand2', 
+        button_save_command = CTkButton(self.canvas, text='Сохранить', font=("Helvetica", 10, "bold"), cursor='hand2', fg_color = '#2E8B57', hover_color='#0A5F38', 
                                         command=lambda: (
                                                         saveCommand(command, inputNameCommand.get(), inputTextCommand.get('0.0', END)),
                                                         CommandManager(self.canvas)
