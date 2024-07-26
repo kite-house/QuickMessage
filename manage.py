@@ -4,7 +4,6 @@ from config.processingCommands import *
 
 client = TelegramClient('client', getenv('api_id'), getenv('api_hash'))
 
-
 @client.on(events.NewMessage(outgoing=True, pattern='/'))
 async def command_handler(message):
     try:
@@ -15,13 +14,12 @@ async def command_handler(message):
     await message.delete()
     await message.respond(response)
 
-@client.on(events.NewMessage(outgoing=True, pattern='/editCommand'))
-async def edit_commands_handler(message):
-    try:
-        UpdateCommand(message.text)
-    except Exception:
-        return 
+@client.on(events.NewMessage(outgoing=True, pattern='/test'))
+async def output_interface(message):
     await message.delete()
+    #
     
+
+
 client.start()
 client.run_until_disconnected()
