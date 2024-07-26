@@ -11,6 +11,7 @@ class Canvas(CTkCanvas):
 class Menu(CTkTitleMenu): 
     def __init__(self, master, canvas):
         super().__init__(master)
+        CommandManager(canvas)
         self.add_cascade(text='Аккаунты')
         self.add_cascade(text='Команды', postcommand = lambda: CommandManager(canvas))
         self.add_cascade(text='Настройки')

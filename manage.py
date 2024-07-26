@@ -21,6 +21,7 @@ async def output_interface(message):
     await message.delete()
     GuiProcess = Process(target=launch, name = 'GuiProcess')
     GuiProcess.start()
+    await GuiProcess.join() # Временное решение бага открытие больше одного окна
     
 def launch_telegram():
     client.start()
