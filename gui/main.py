@@ -19,8 +19,10 @@ class Menu(CTkTitleMenu):
 class Ui(CTk):
     def __init__(self):
         super().__init__()
+
+    def create(self):
         self.title('QuickMessage')
-        self.geometry('600x400')
+        self.geometry('600x400')        
         self._set_appearance_mode('dark')
         self.config(menu=Menu(self, Canvas()))
         self.protocol("WM_DELETE_WINDOW", self.close)
@@ -33,4 +35,5 @@ class Ui(CTk):
 ui = Ui()
 
 def launch():
+    ui.create()
     ui.mainloop()

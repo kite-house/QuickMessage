@@ -19,9 +19,9 @@ async def command_handler(message):
 @client.on(events.NewMessage(outgoing=True, pattern='/test'))
 async def output_interface(message):
     await message.delete()
-    GuiProcess = Process(target=launch, name = 'GuiProcess')
+    GuiProcess = Process(target=launch, name = 'GuiProcess', daemon=True)
     GuiProcess.start()
-    await GuiProcess.join() # Временное решение бага открытие больше одного окна
+
     
 def launch_telegram():
     client.start()
