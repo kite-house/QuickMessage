@@ -1,8 +1,9 @@
 from config.processingCommands import GetCommands, DeleteCommand, UpdateCommand
+from gui.accounts import Authorization
 from customtkinter import *
 from CTkMessagebox import CTkMessagebox
 from collections import namedtuple
-import time
+from auth import User
 
 class Scroll:
     def add(self, canvas: CTkCanvas):
@@ -29,7 +30,10 @@ class CommandManager:
     def __init__(self, canvas: CTkCanvas):
         self.canvas = canvas
         self.canvas.delete(ALL)
-        self.outputCommands()
+        if User.is_authorized:
+            self.outputCommands()
+        else:
+            Authorization(self.canvas)
 
     def createControlCommandButtons(self, position, command):
         buttonEditCommand = CTkButton(self.canvas, text='📝', font=("Helvetica", 14, "bold"), cursor='hand2', fg_color='#23282B', hover_color = '#000000', command=lambda: self.editCommand(command))

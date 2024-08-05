@@ -1,10 +1,9 @@
-from os import getenv
-from telethon import TelegramClient, events
+from telethon import events
 from config.processingCommands import *
 from multiprocessing import Process
 from gui.main import launch
+from auth import client, User, CheckAuth
 
-client = TelegramClient('client', getenv('api_id'), getenv('api_hash'))
 
 @client.on(events.NewMessage(outgoing=True, pattern='/'))
 async def command_handler(message):
@@ -24,6 +23,13 @@ async def output_interface(message):
 
     
 def launch_telegram():
+    CheckAuth()
+
+    if not User.is_authorized:
+        GuiProcess = Process(target=launch, name = 'GuiProcessAuth', daemon=True)
+        GuiProcess.start()
+        GuiProcess.join()
+
     client.start()
     client.run_until_disconnected()
 

@@ -1,6 +1,8 @@
 from customtkinter import CTk, CTkCanvas
 from CTkMenuBar import CTkTitleMenu
 from gui.commands import CommandManager
+from gui.accounts import Authorization
+from auth import User
 
 class Canvas(CTkCanvas):
     def __init__(self):
@@ -11,10 +13,11 @@ class Canvas(CTkCanvas):
 class Menu(CTkTitleMenu): 
     def __init__(self, master, canvas):
         super().__init__(master)
-        CommandManager(canvas)
-        self.add_cascade(text='Аккаунты')
+        if User.is_authorized:
+            CommandManager(canvas)
+        else:
+            Authorization(canvas)
         self.add_cascade(text='Команды', postcommand = lambda: CommandManager(canvas))
-        self.add_cascade(text='Настройки')
 
 class Ui(CTk):
     def __init__(self):
