@@ -26,6 +26,7 @@ class Ui(CTk):
         self.config(menu=Menu(self, self.canvas, user_is_authorized))
         self.protocol("WM_DELETE_WINDOW", self.close)
         self.resizable(width=False, height=False)
+
         if user_is_authorized:
             CommandManager(self.canvas, user_is_authorized)
         else:
@@ -34,6 +35,7 @@ class Ui(CTk):
     def close(self):
         self.withdraw()
         self.quit()
+        
 
 ui = Ui()
 
