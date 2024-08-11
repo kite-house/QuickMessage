@@ -2,7 +2,6 @@ from customtkinter import CTk, CTkCanvas
 from CTkMenuBar import CTkTitleMenu
 from gui.commands import CommandManager
 from gui.accounts import Authorization
-from auth import User
 
 class Canvas(CTkCanvas):
     def __init__(self):
@@ -11,25 +10,26 @@ class Canvas(CTkCanvas):
         self.pack(fill = 'both', expand = True)
 
 class Menu(CTkTitleMenu): 
-    def __init__(self, master, canvas):
+    def __init__(self, master, canvas, user_is_authorized):
         super().__init__(master)
-        if User.is_authorized:
-            CommandManager(canvas)
-        else:
-            Authorization(canvas)
-        self.add_cascade(text='Команды', postcommand = lambda: CommandManager(canvas))
+        self.add_cascade(text='Команды', postcommand = lambda: CommandManager(canvas, user_is_authorized))
 
 class Ui(CTk):
     def __init__(self):
         super().__init__()
 
-    def create(self):
+    def create(self, user_is_authorized):
+        self.canvas = Canvas()
         self.title('QuickMessage')
         self.geometry('600x400')        
         self._set_appearance_mode('dark')
-        self.config(menu=Menu(self, Canvas()))
+        self.config(menu=Menu(self, self.canvas, user_is_authorized))
         self.protocol("WM_DELETE_WINDOW", self.close)
         self.resizable(width=False, height=False)
+        if user_is_authorized:
+            CommandManager(self.canvas, user_is_authorized)
+        else:
+            Authorization(self.canvas)
 
     def close(self):
         self.withdraw()
@@ -37,6 +37,7 @@ class Ui(CTk):
 
 ui = Ui()
 
-def launch():
-    ui.create()
+
+def launch(user_is_authorized):
+    ui.create(user_is_authorized)
     ui.mainloop()

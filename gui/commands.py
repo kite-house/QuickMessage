@@ -3,7 +3,7 @@ from gui.accounts import Authorization
 from customtkinter import *
 from CTkMessagebox import CTkMessagebox
 from collections import namedtuple
-from auth import User
+
 
 class Scroll:
     def add(self, canvas: CTkCanvas):
@@ -27,10 +27,10 @@ class Scroll:
 scroll = Scroll()
 
 class CommandManager:
-    def __init__(self, canvas: CTkCanvas):
+    def __init__(self, canvas: CTkCanvas, user_is_authorized):
         self.canvas = canvas
         self.canvas.delete(ALL)
-        if User.is_authorized:
+        if user_is_authorized:
             self.outputCommands()
         else:
             Authorization(self.canvas)
