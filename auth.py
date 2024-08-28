@@ -1,7 +1,12 @@
-from telethon import TelegramClient
+from telethon import TelegramClient, errors, sessions
 from os import getenv
 
-client = TelegramClient('client', getenv('api_id'), getenv('api_hash'))
+try:
+    client = TelegramClient('client', getenv('api_id'), getenv('api_hash'))
+    client.disconnect()
+except sessions.sqlite.sqlite3.OperationalError:
+    pass
+    
 
 class User:
     number:str = None
@@ -18,13 +23,18 @@ class SendCode:
             await client.connect()
             await client.send_code_request(User.number)
             await client.disconnect()
-        except Exception:
+        except (TypeError, errors.rpcerrorlist.PhoneNumberInvalidError):
             raise SystemError('Номер телефона введен неправильно!')
+        
+        except errors.rpcerrorlist.SendCodeUnavailableError:
+            pass
 
 class Sign:
     def __init__(self, code: str):
         User.code = code
         client.loop.run_until_complete(self.sign())
+        CheckAuth()
+        
 
     async def sign(self):
         try:
@@ -33,8 +43,6 @@ class Sign:
             await client.disconnect()    
         except Exception:
             raise SystemError('Неверный код!')
-        
-        CheckAuth()
 
 class CheckAuth:
     def __init__(self):

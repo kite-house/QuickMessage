@@ -26,13 +26,18 @@ def launch_telegram():
     CheckAuth()
 
     if not User.is_authorized:
-        GuiProcess = Process(target=launch, name = 'GuiProcessAuth', daemon=True)
+        GuiProcess = Process(target=launch, name = 'GuiProcessAuth', daemon=True, args=(User.is_authorized,))
         GuiProcess.start()
         GuiProcess.join()
+ 
+    CheckAuth()
 
+    if not User.is_authorized: return
+    
     client.start()
     client.run_until_disconnected()
 
+        
 if __name__ == '__main__':
     MainProcess = Process(target=launch_telegram, name = 'TelegramPluginProcess')
     MainProcess.start()

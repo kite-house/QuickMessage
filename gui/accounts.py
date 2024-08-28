@@ -71,3 +71,8 @@ class Authorization:
         result.configure(font = ('Helvetica', 14, 'bold'), fg_color = '#1D1E1E')
 
         self.canvas.create_window(300, 150, window = result)
+
+        # задержка 2 секунды
+
+        self.canvas.after(2000, self.canvas.quit)  # завершение через 2 секунды
+

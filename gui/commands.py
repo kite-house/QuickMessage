@@ -27,7 +27,7 @@ class Scroll:
 scroll = Scroll()
 
 class CommandManager:
-    def __init__(self, canvas: CTkCanvas, user_is_authorized):
+    def __init__(self, canvas: CTkCanvas, user_is_authorized: bool = True):
         self.canvas = canvas
         self.canvas.delete(ALL)
         if user_is_authorized:
