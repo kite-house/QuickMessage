@@ -8,7 +8,7 @@ from auth import client, User, CheckAuth
 @client.on(events.NewMessage(outgoing=True, pattern='/'))
 async def command_handler(message):
     try:
-        response = str(ExecuteCommand(message.text)).replace("&", " ")
+        response = str(ExecuteCommand(message.text))
     except Exception:
         return
     

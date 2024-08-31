@@ -23,7 +23,7 @@ class ExecuteCommand(Commands):
         self.text = text
 
     def __str__(self):
-        return str(self.data[self.text.split(' ')[0]]).format(*self.text.split(' ')[1:])
+        return str(self.data[self.text.split(' ')[0]]).format(*[i.strip(' ') for i in self.text.replace("}", '').split('{')][1:])
 
 class GetCommands(Commands):
     def __init__(self):
