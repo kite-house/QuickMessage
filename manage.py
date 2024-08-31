@@ -3,7 +3,8 @@ from config.processingCommands import *
 from multiprocessing import Process
 from gui.main import launch
 from auth import client, User, CheckAuth
-
+import ping3
+import time
 
 @client.on(events.NewMessage(outgoing=True, pattern='/'))
 async def command_handler(message):
@@ -23,22 +24,28 @@ async def output_interface(message):
 
     
 def launch_telegram():
-    CheckAuth()
+    while True:
+        try: 
+            ping3.ping('8.8.8.8')
+            CheckAuth()
 
-    if not User.is_authorized:
-        GuiProcess = Process(target=launch, name = 'GuiProcessAuth', daemon=True, args=(User.is_authorized,))
-        GuiProcess.start()
-        GuiProcess.join()
- 
-    CheckAuth()
+            if not User.is_authorized:
+                GuiProcess = Process(target=launch, name = 'GuiProcessAuth', daemon=True, args=(User.is_authorized,))
+                GuiProcess.start()
+                GuiProcess.join()
+        
+            CheckAuth()
 
-    if not User.is_authorized: return
-    
-    client.start()
-    client.run_until_disconnected()
+            if not User.is_authorized: return
+            
+            client.start()
+            client.run_until_disconnected()
+            break
+        except (ConnectionError, OSError):
+            time.sleep(5)
 
         
 if __name__ == '__main__':
     MainProcess = Process(target=launch_telegram, name = 'TelegramPluginProcess')
     MainProcess.start()
-    MainProcess.join()
+    MainProcess.join()    
