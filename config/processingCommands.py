@@ -1,5 +1,6 @@
 import json
 from collections import namedtuple
+from os import mkdir
 
 class Commands:
     def __init__(self, file: str = 'config/commands.json', mode: str = 'r', **kwargs):
@@ -12,7 +13,12 @@ class Commands:
                     self.data = json.dump(kwargs['data'], file, ensure_ascii=False)
                 
         except FileNotFoundError:
+            try:
+                mkdir('config')
+            except FileExistsError:
+                pass
             open('config/commands.json', 'w+')
+            self.data = {}
 
         except json.decoder.JSONDecodeError:
             self.data = {}
