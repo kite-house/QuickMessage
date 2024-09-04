@@ -10,8 +10,8 @@
 > Создайте .env
 
 ```
-api_id = ""
-api_hash = ""
+api_id = "API ID вашего приложение Telegram"
+api_hash = "API HASH вашего приложение Telegram"
 ```
 
 ### Описание
@@ -20,18 +20,14 @@ api_hash = ""
 
 ### Как использовать? 
 
-> Переходим в commands.json
+> Запускаем программу
 
-> Добавляем в него нужные текста и ссылки(команды) для них
-```
-{
-  "Команда к примеру /hi": "Полноценный текст" 
-}
+> При первом запуске, вас попросят авторизировать свой аккаунт Telegram в системе
 
-```
+> После регистрации, вы сможете перейти во вкладку команды и редактировать их
 
 > [!TIP]
-> Вводим /hi в любой чат и скрипт изменит сообщение на "Полноценный текст"
+> /QuickMessage - вызывает графический интерфейс команды для редактирование команд
 
 
 
@@ -50,10 +46,10 @@ api_hash = ""
 
 > Create .env
 
-```
-api_id = ""
-api_hash = ""
-```
+``
+api_id ="API ID of your Telegram app"
+api_hash = "API HASH of your Telegram app"
+``
 
 ### Description
 
@@ -61,15 +57,11 @@ We send an abbreviated command to another user, and it turns into a full-fledged
 
 ### How to use it? 
 
-> Go to commands.json
+> Starting the program
 
-> Add the necessary texts and links (commands) for them to it
-``
-{
-"Command for example /hi": "Full text"
-}
+> At the first launch, you will be asked to authorize your Telegram account in the system
 
-```
+> After registration, you will be able to go to the commands tab and edit them
 
 > [!TIP]
-> Enter /hi into any chat and the script will change the message to "Full text"
+> /QuickMessage - calls the command GUI to edit commands
