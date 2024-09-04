@@ -26,6 +26,8 @@ api_hash = "API HASH вашего приложение Telegram"
 
 > После регистрации, вы сможете перейти во вкладку команды и редактировать их
 
+### Системные команды
+
 > [!TIP]
 > /QuickMessage - вызывает графический интерфейс команды для редактирование команд
 
@@ -46,10 +48,10 @@ api_hash = "API HASH вашего приложение Telegram"
 
 > Create .env
 
-``
+```
 api_id ="API ID of your Telegram app"
 api_hash = "API HASH of your Telegram app"
-``
+```
 
 ### Description
 
@@ -57,11 +59,13 @@ We send an abbreviated command to another user, and it turns into a full-fledged
 
 ### How to use it? 
 
-> Starting the program
+> Launching the program
 
 > At the first launch, you will be asked to authorize your Telegram account in the system
 
-> After registration, you will be able to go to the commands tab and edit them
+> After registration, you can go to the commands tab and edit them
+
+### System commands
 
 > [!TIP]
 > /QuickMessage - calls the command GUI to edit commands
